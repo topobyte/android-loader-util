@@ -23,23 +23,27 @@ import android.util.Log;
 import de.topobyte.android.loader.Loader.Initializer;
 
 public abstract class LoaderActionBarActivity extends ActionBarActivity
-		implements LoaderActivity {
+		implements LoaderActivity
+{
 	private int loadDialogMessageId;
 	private Loader<LoaderActionBarActivity> loader;
 
-	public LoaderActionBarActivity(int loadDialogMessageId) {
+	public LoaderActionBarActivity(int loadDialogMessageId)
+	{
 		this.loadDialogMessageId = loadDialogMessageId;
 	}
 
 	@Override
-	protected void onCreate(final Bundle bundle) {
+	protected void onCreate(final Bundle bundle)
+	{
 		super.onCreate(bundle);
 		Log.i("navigation", "LoaderActionBarActivity.onCreate()");
 
 		loader = new MyLoader(this, bundle, new Initializer() {
 
 			@Override
-			public void initialize() {
+			public void initialize()
+			{
 				postLoadCreate(bundle);
 			}
 		});
@@ -47,34 +51,40 @@ public abstract class LoaderActionBarActivity extends ActionBarActivity
 	}
 
 	@Override
-	protected void onResume() {
+	protected void onResume()
+	{
 		super.onResume();
 		loader.onResume();
 	}
 
 	@Override
-	protected void onPause() {
+	protected void onPause()
+	{
 		super.onPause();
 		loader.onPause();
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	protected void onSaveInstanceState(Bundle outState)
+	{
 		super.onSaveInstanceState(outState);
 		loader.onSaveInstanceState(outState);
 	}
 
 	protected abstract boolean performInitialization(InitializationInfo info);
 
-	private class MyLoader extends Loader<LoaderActionBarActivity> {
+	private class MyLoader extends Loader<LoaderActionBarActivity>
+	{
 
 		public MyLoader(LoaderActionBarActivity activity, Bundle bundle,
-				Initializer initiliazer) {
+				Initializer initiliazer)
+		{
 			super(activity, bundle, initiliazer, loadDialogMessageId);
 		}
 
 		@Override
-		protected boolean performInitialization(InitializationInfo info) {
+		protected boolean performInitialization(InitializationInfo info)
+		{
 			return LoaderActionBarActivity.this.performInitialization(info);
 		}
 

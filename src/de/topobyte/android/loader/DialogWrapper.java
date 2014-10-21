@@ -21,16 +21,19 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-public class DialogWrapper extends DialogFragment {
+public class DialogWrapper extends DialogFragment
+{
 
 	private Dialog dialog;
 
-	public DialogWrapper(Dialog dialog) {
+	public DialogWrapper(Dialog dialog)
+	{
 		this.dialog = dialog;
 	}
 
 	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog(Bundle savedInstanceState)
+	{
 		return dialog;
 	}
 }
