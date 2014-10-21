@@ -32,15 +32,15 @@ public abstract class LoaderActionBarActivity extends ActionBarActivity
 	}
 
 	@Override
-	protected void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onCreate(final Bundle bundle) {
+		super.onCreate(bundle);
 		Log.i("navigation", "LoaderActionBarActivity.onCreate()");
 
-		loader = new MyLoader(this, new Initializer() {
+		loader = new MyLoader(this, bundle, new Initializer() {
 
 			@Override
 			public void initialize() {
-				postLoadCreate(savedInstanceState);
+				postLoadCreate(bundle);
 			}
 		});
 
@@ -68,9 +68,9 @@ public abstract class LoaderActionBarActivity extends ActionBarActivity
 
 	private class MyLoader extends Loader<LoaderActionBarActivity> {
 
-		public MyLoader(LoaderActionBarActivity activity,
+		public MyLoader(LoaderActionBarActivity activity, Bundle bundle,
 				Initializer initiliazer) {
-			super(activity, initiliazer, loadDialogMessageId);
+			super(activity, bundle, initiliazer, loadDialogMessageId);
 		}
 
 		@Override

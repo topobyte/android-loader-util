@@ -27,9 +27,11 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-public abstract class Loader<T extends FragmentActivity & LoaderActivity>
-{
+public abstract class Loader<T extends FragmentActivity & LoaderActivity> {
 	private static final String LOG_TAG = "loader";
+
+	private static final String STATE_DONE = "state_done";
+	private static final String STATE_SUCCESS = "state_sucess";
 
 	public static final String PREF_LAST_VERSION = "lastSeenVersion";
 
@@ -50,16 +52,24 @@ public abstract class Loader<T extends FragmentActivity & LoaderActivity>
 
 	private LoaderDialog loaderDialog;
 
-	public interface Initializer
-	{
+	public interface Initializer {
 		public void initialize();
 	}
 
-	public Loader(T activity, Initializer initializer, int messageId)
-	{
+	public Loader(T activity, Bundle bundle, Initializer initializer,
+			int messageId) {
 		this.activity = activity;
 		this.initializer = initializer;
 		this.messageId = messageId;
+
+		if (bundle != null) {
+			done = bundle.getBoolean(STATE_DONE);
+			initializationSucceeded = bundle.getBoolean(STATE_SUCCESS);
+			if (done) {
+				postInitialization();
+				return;
+			}
+		}
 
 		preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 
@@ -85,13 +95,16 @@ public abstract class Loader<T extends FragmentActivity & LoaderActivity>
 		}
 	}
 
-	protected void postInitialization()
-	{
+	protected void postInitialization() {
+		Log.i(LOG_TAG, "Loader.postInitialization. done? "
+				+ postInitializationDone);
 		if (postInitializationDone) {
 			return;
 		}
 		postInitializationDone = true;
-		loaderDialog.dismiss();
+		if (loaderDialog != null) {
+			loaderDialog.dismiss();
+		}
 		if (initializationSucceeded) {
 			initializer.initialize();
 			if (resumeInternal) {
@@ -107,8 +120,8 @@ public abstract class Loader<T extends FragmentActivity & LoaderActivity>
 
 	private boolean resumeInternal = false;
 
-	protected void onResume()
-	{
+	protected void onResume() {
+		Log.i(LOG_TAG, "Loader.onResume() done? " + done);
 		resumeInternal = true;
 		beforeSaveInstanceState = true;
 		if (done) {
@@ -127,37 +140,34 @@ public abstract class Loader<T extends FragmentActivity & LoaderActivity>
 		}
 	}
 
-	protected void onPause()
-	{
+	protected void onPause() {
 		resumeInternal = false;
 		if (initializationSucceeded) {
 			dispatchOnPause();
 		}
 	}
 
-	private void dispatchOnResume()
-	{
+	private void dispatchOnResume() {
 		if (!resumed) {
 			activity.myResume();
 			resumed = true;
 		}
 	}
 
-	private void dispatchOnPause()
-	{
+	private void dispatchOnPause() {
 		if (resumed) {
 			activity.myPause();
 			resumed = false;
 		}
 	}
 
-	public void onSaveInstanceState(Bundle outState)
-	{
+	public void onSaveInstanceState(Bundle outState) {
 		beforeSaveInstanceState = false;
+		outState.putBoolean(STATE_DONE, done);
+		outState.putBoolean(STATE_SUCCESS, initializationSucceeded);
 	}
 
-	private void startWorkerThread()
-	{
+	private void startWorkerThread() {
 		Log.d(LOG_TAG, "starting worker thread");
 		LoadWorker worker = new LoadWorker();
 		Thread thread = new Thread(worker);
@@ -166,12 +176,10 @@ public abstract class Loader<T extends FragmentActivity & LoaderActivity>
 
 	private boolean initializationSucceeded = false;
 
-	private class LoadWorker implements Runnable
-	{
+	private class LoadWorker implements Runnable {
 
 		@Override
-		public void run()
-		{
+		public void run() {
 			InitializationInfo info = new InitializationInfo(versionUpdate,
 					storedVersion, currentVersion);
 			initializationSucceeded = performInitialization(info);
@@ -185,8 +193,7 @@ public abstract class Loader<T extends FragmentActivity & LoaderActivity>
 			activity.runOnUiThread(new Runnable() {
 
 				@Override
-				public void run()
-				{
+				public void run() {
 					if (beforeSaveInstanceState) {
 						postInitialization();
 					}
