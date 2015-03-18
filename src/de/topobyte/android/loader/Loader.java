@@ -116,7 +116,7 @@ public abstract class Loader<T extends FragmentActivity & LoaderActivity>
 			}
 		} else {
 			Dialog errorDialog = activity.createErrorDialog();
-			DialogWrapper wrapper = new DialogWrapper(errorDialog);
+			DialogWrapper wrapper = DialogWrapper.newInstance(errorDialog);
 			wrapper.setCancelable(false);
 			wrapper.show(activity.getSupportFragmentManager(), "dialog");
 		}

@@ -1,4 +1,4 @@
-// Copyright 2014 Sebastian Kuerten
+// Copyright 2015 Sebastian Kuerten
 //
 // This file is part of android-loader-util.
 //
@@ -15,27 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with android-loader-util. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.android.loader;
+package de.topobyte.android.loader2;
 
-import android.app.Dialog;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-
-public class DialogWrapper extends DialogFragment
-{
-
-	private Dialog dialog;
-
-	public static DialogWrapper newInstance(Dialog dialog)
-	{
-		DialogWrapper wrapper = new DialogWrapper();
-		wrapper.dialog = dialog;
-		return wrapper;
-	}
-
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState)
-	{
-		return dialog;
-	}
+public enum Result {
+	SUCESS, FAILURE
 }

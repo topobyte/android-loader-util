@@ -1,4 +1,4 @@
-// Copyright 2014 Sebastian Kuerten
+// Copyright 2015 Sebastian Kuerten
 //
 // This file is part of android-loader-util.
 //
@@ -15,27 +15,40 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with android-loader-util. If not, see <http://www.gnu.org/licenses/>.
 
-package de.topobyte.android.loader;
+package de.topobyte.android.loader2;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-public class DialogWrapper extends DialogFragment
+public class LoaderDialog extends DialogFragment
 {
 
-	private Dialog dialog;
-
-	public static DialogWrapper newInstance(Dialog dialog)
+	public static LoaderDialog newInstance(int messageId)
 	{
-		DialogWrapper wrapper = new DialogWrapper();
-		wrapper.dialog = dialog;
-		return wrapper;
+		LoaderDialog dialog = new LoaderDialog();
+		Bundle bundle = new Bundle(1);
+		bundle.putInt("message", messageId);
+		dialog.setArguments(bundle);
+		return dialog;
+	}
+
+	private int messageId;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		messageId = getArguments().getInt("message");
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
-		return dialog;
+		String message = getString(messageId);
+		ProgressDialog startupDialog = ProgressDialog.show(getActivity(), "",
+				message, true);
+		return startupDialog;
 	}
 }
