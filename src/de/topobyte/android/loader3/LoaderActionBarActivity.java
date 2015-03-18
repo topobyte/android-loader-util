@@ -51,7 +51,7 @@ public abstract class LoaderActionBarActivity extends ActionBarActivity
 		this.messageId = messageId;
 	}
 
-	protected abstract boolean performInitialization();
+	public abstract TaskFragment createTaskFragment();
 
 	public abstract void initializationSuccess();
 
@@ -100,15 +100,7 @@ public abstract class LoaderActionBarActivity extends ActionBarActivity
 			// retained across a configuration change.
 			if (taskFragment == null) {
 				Log.i("loader", "task fragment is null");
-				taskFragment = TaskFragment.newInstance(new Initializable() {
-
-					@Override
-					public boolean performInitialization()
-					{
-						return LoaderActionBarActivity.this
-								.performInitialization();
-					}
-				});
+				taskFragment = createTaskFragment();
 				fm.beginTransaction().add(taskFragment, TAG_TASK_FRAGMENT)
 						.commit();
 			}

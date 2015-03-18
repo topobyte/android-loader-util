@@ -26,17 +26,10 @@ import android.support.v4.app.Fragment;
  * This Fragment manages a single background task and retains itself across
  * configuration changes.
  */
-public class TaskFragment extends Fragment
+public abstract class TaskFragment extends Fragment
 {
 
-	private Initializable runnable;
-
-	public static TaskFragment newInstance(Initializable runnable)
-	{
-		TaskFragment task = new TaskFragment();
-		task.runnable = runnable;
-		return task;
-	}
+	public abstract boolean performInitialization();
 
 	/**
 	 * Callback interface through which the fragment will report the task's
@@ -52,7 +45,7 @@ public class TaskFragment extends Fragment
 	}
 
 	private TaskCallbacks mCallbacks;
-	private IniTask mTask;
+	private InitTask mTask;
 
 	/**
 	 * Hold a reference to the parent Activity so we can report the task's
@@ -79,7 +72,7 @@ public class TaskFragment extends Fragment
 		setRetainInstance(true);
 
 		// Create and execute the background task.
-		mTask = new IniTask();
+		mTask = new InitTask();
 		mTask.execute();
 	}
 
@@ -102,7 +95,7 @@ public class TaskFragment extends Fragment
 	 * case they are invoked after the Activity's and Fragment's onDestroy()
 	 * method have been called.
 	 */
-	private class IniTask extends AsyncTask<Void, Void, Boolean>
+	private class InitTask extends AsyncTask<Void, Void, Boolean>
 	{
 
 		@Override
@@ -120,7 +113,7 @@ public class TaskFragment extends Fragment
 		@Override
 		protected Boolean doInBackground(Void... ignore)
 		{
-			boolean success = runnable.performInitialization();
+			boolean success = performInitialization();
 			return success;
 		}
 
