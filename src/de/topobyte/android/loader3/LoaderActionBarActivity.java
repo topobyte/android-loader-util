@@ -31,9 +31,6 @@ public abstract class LoaderActionBarActivity extends ActionBarActivity
 	private static final String TAG_LOAD_DIALOG = "load_dialog";
 	private static final String TAG_TASK_FRAGMENT = "task_fragment";
 
-	private static final String BUNDLE_INIT_DONE = "init_done";
-	private static final String BUNDLE_INIT_SUCCESS = "init_success";
-
 	private TaskFragment taskFragment;
 
 	private final int messageId;
@@ -65,31 +62,24 @@ public abstract class LoaderActionBarActivity extends ActionBarActivity
 
 		FragmentManager fm = getSupportFragmentManager();
 
-		if (savedInstanceState != null) {
-			initializationDone = savedInstanceState
-					.getBoolean(BUNDLE_INIT_DONE);
-			initializationSucceeded = savedInstanceState
-					.getBoolean(BUNDLE_INIT_SUCCESS);
-		}
-
 		Log.i("loader", "initializationDone? " + initializationDone);
 		Log.i("loader", "initializationSucceeded? " + initializationSucceeded);
 
+		taskFragment = (TaskFragment) fm
+				.findFragmentByTag(TAG_TASK_FRAGMENT);
+		if (taskFragment != null) {
+			Log.i("loader", "task fragment is not null");
+			initializationDone = taskFragment.hasFinished();
+			initializationSucceeded = taskFragment.getResult();
+		}
+
+		if (initializationDone) {
+			tryToMoveOnToMainUI();
+			return;
+		}
+
 		if (!initializationDone) {
 			loaderDialog = (LoaderDialog) fm.findFragmentByTag(TAG_LOAD_DIALOG);
-			taskFragment = (TaskFragment) fm
-					.findFragmentByTag(TAG_TASK_FRAGMENT);
-
-			if (taskFragment != null) {
-				Log.i("loader", "task fragment is not null");
-				if (taskFragment.hasFinished()) {
-					Log.i("loader", "task fragment has finished");
-					initializationDone = true;
-					initializationSucceeded = taskFragment.getResult();
-					tryToMoveOnToMainUI();
-					return;
-				}
-			}
 
 			if (loaderDialog == null) {
 				Log.i("loader", "dialog is null");
@@ -134,8 +124,6 @@ public abstract class LoaderActionBarActivity extends ActionBarActivity
 		super.onSaveInstanceState(outState);
 		beforeOnSaveInstanceState = false;
 		Log.i("loader", "onSaveInstanceState");
-		outState.putBoolean(BUNDLE_INIT_DONE, initializationDone);
-		outState.putBoolean(BUNDLE_INIT_SUCCESS, initializationSucceeded);
 	}
 
 	private void showLoadDialog()

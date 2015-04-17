@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 /**
  * This Fragment manages a single background task and retains itself across
@@ -28,6 +29,9 @@ import android.support.v4.app.Fragment;
  */
 public abstract class TaskFragment extends Fragment
 {
+
+	private static final String BUNDLE_FINISHED = "finished";
+	private static final String BUNDLE_RESULT = "result";
 
 	public abstract boolean performInitialization();
 
@@ -71,9 +75,31 @@ public abstract class TaskFragment extends Fragment
 		// Retain this fragment across configuration changes.
 		setRetainInstance(true);
 
+		if (savedInstanceState == null) {
+			Log.i("loader", "taskFragment: onCreate without state");
+		} else {
+			savedInstanceState.getBoolean(BUNDLE_FINISHED, false);
+			savedInstanceState.getBoolean(BUNDLE_RESULT, false);
+			Log.i("loader", "taskFragment: onCreate, finished: "
+					+ finished + ", result: " + result);
+		}
+
 		// Create and execute the background task.
-		mTask = new InitTask();
-		mTask.execute();
+		if (!finished) {
+			mTask = new InitTask();
+			mTask.execute();
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		Log.i("loader", "taskFragment: onSaveInstanceState, finished: "
+				+ finished + ", result: " + result);
+
+		outState.putBoolean(BUNDLE_FINISHED, finished);
+		outState.putBoolean(BUNDLE_RESULT, result);
 	}
 
 	/**
