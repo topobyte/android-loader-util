@@ -1,0 +1,27 @@
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+group = pGroup
+version = pVersion
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile files('/home/z/android-sdk/platforms/android-22/android.jar')
+    compile fileTree(dir: 'lib', include: ['*.jar'])
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+	    repository(url: maven_url_topobyte)
+        }
+    }
+}
