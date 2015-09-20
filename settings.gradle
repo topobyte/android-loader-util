@@ -1,1 +1,1 @@
-rootProject.name = pName
+include ':loader-util'
