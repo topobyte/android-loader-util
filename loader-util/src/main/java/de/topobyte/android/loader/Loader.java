@@ -17,13 +17,13 @@
 
 package de.topobyte.android.loader;
 
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
@@ -115,10 +115,8 @@ public abstract class Loader<T extends FragmentActivity & LoaderActivity>
 				dispatchOnResume();
 			}
 		} else {
-			Dialog errorDialog = activity.createErrorDialog();
-			DialogWrapper wrapper = DialogWrapper.newInstance(errorDialog);
-			wrapper.setCancelable(false);
-			wrapper.show(activity.getSupportFragmentManager(), "dialog");
+			DialogFragment errorDialog = activity.createErrorDialog();
+			errorDialog.show(activity.getSupportFragmentManager(), null);
 		}
 	}
 

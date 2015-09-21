@@ -17,8 +17,8 @@
 
 package de.topobyte.android.loader;
 
-import android.app.Dialog;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 
 public interface LoaderActivity
 {
@@ -28,5 +28,5 @@ public interface LoaderActivity
 
 	public void myPause();
 
-	public Dialog createErrorDialog();
+	public DialogFragment createErrorDialog();
 }
