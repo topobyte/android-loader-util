@@ -18,11 +18,12 @@
 package de.topobyte.android.loader;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
 import de.topobyte.android.loader.Loader.Initializer;
 
-public abstract class LoaderActionBarActivity extends ActionBarActivity
+public abstract class LoaderActionBarActivity extends AppCompatActivity
 		implements LoaderActivity
 {
 	private int loadDialogMessageId;
