@@ -74,8 +74,8 @@ public abstract class TaskFragment extends Fragment
 		if (savedInstanceState == null) {
 			Log.i("loader", "taskFragment: onCreate without state");
 		} else {
-			savedInstanceState.getBoolean(BUNDLE_FINISHED, false);
-			savedInstanceState.getBoolean(BUNDLE_RESULT, false);
+			finished = savedInstanceState.getBoolean(BUNDLE_FINISHED, false);
+			result = savedInstanceState.getBoolean(BUNDLE_RESULT, false);
 			Log.i("loader", "taskFragment: onCreate, finished: "
 					+ finished + ", result: " + result);
 		}
