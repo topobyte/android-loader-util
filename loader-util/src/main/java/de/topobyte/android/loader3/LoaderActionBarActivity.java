@@ -120,7 +120,7 @@ public abstract class LoaderActionBarActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState)
+	protected void onSaveInstanceState(Bundle outState)
 	{
 		super.onSaveInstanceState(outState);
 		beforeOnSaveInstanceState = false;
@@ -135,19 +135,7 @@ public abstract class LoaderActionBarActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onPreExecute()
-	{
-		Log.i("loader", "onPreExecute");
-	}
-
-	@Override
-	public void onCancelled()
-	{
-		Log.i("loader", "onCancelled");
-	}
-
-	@Override
-	public void onPostExecute(boolean result)
+	public void onTaskFragmentPostExecute(boolean result)
 	{
 		Log.i("loader", "onPostExecute");
 		initializationDone = true;

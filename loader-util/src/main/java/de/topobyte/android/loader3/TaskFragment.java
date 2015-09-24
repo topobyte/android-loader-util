@@ -39,13 +39,9 @@ public abstract class TaskFragment extends Fragment
 	 * Callback interface through which the fragment will report the task's
 	 * progress and results back to the Activity.
 	 */
-	interface TaskCallbacks
+	public interface TaskCallbacks
 	{
-		void onPreExecute();
-
-		void onCancelled();
-
-		void onPostExecute(boolean result);
+		void onTaskFragmentPostExecute(boolean result);
 	}
 
 	private TaskCallbacks mCallbacks;
@@ -114,23 +110,15 @@ public abstract class TaskFragment extends Fragment
 	}
 
 	/**
-	 * A dummy task that performs some (dumb) background work and proxies
-	 * progress updates and results back to the Activity.
-	 * 
+	 * A task that performs some background work and proxies results back to
+	 * the Activity.
+	 *
 	 * Note that we need to check if the callbacks are null in each method in
 	 * case they are invoked after the Activity's and Fragment's onDestroy()
 	 * method have been called.
 	 */
 	private class InitTask extends AsyncTask<Void, Void, Boolean>
 	{
-
-		@Override
-		protected void onPreExecute()
-		{
-			if (mCallbacks != null) {
-				mCallbacks.onPreExecute();
-			}
-		}
 
 		/**
 		 * Note that we do NOT call the callback object's methods directly from
@@ -144,26 +132,12 @@ public abstract class TaskFragment extends Fragment
 		}
 
 		@Override
-		protected void onProgressUpdate(Void... ignore)
-		{
-
-		}
-
-		@Override
-		protected void onCancelled()
-		{
-			if (mCallbacks != null) {
-				mCallbacks.onCancelled();
-			}
-		}
-
-		@Override
 		protected void onPostExecute(Boolean result)
 		{
 			TaskFragment.this.finished = true;
 			TaskFragment.this.result = result;
 			if (mCallbacks != null) {
-				mCallbacks.onPostExecute(result);
+				mCallbacks.onTaskFragmentPostExecute(result);
 			}
 		}
 	}
