@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="orientation_default">Standard</string>
-    <string name="orientation_auto">Automatisch</string>
-    <string name="orientation_portrait">Hochformat</string>
-    <string name="orientation_landscape">Querformat</string>
-
-</resources>
