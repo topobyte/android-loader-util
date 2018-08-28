@@ -1,3 +1,7 @@
+wrapper {
+    gradleVersion = 4.9
+}
+
 buildscript {
     repositories {
         jcenter()
