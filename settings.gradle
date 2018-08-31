@@ -1,1 +1,2 @@
 include ':loader-util'
+project(':loader-util').name = 'android-loader-util'

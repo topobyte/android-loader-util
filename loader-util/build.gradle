@@ -1,4 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+group = pGroup
+version = pVersion
 
 android {
     compileSdkVersion 27
@@ -17,4 +21,21 @@ android {
 
 dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: maven_url_topobyte)
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives sourcesJar
 }
