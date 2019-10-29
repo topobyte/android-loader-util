@@ -18,7 +18,7 @@
 package de.topobyte.android.loader2;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 import android.util.Log;
 
 public abstract class InitializationLoader extends AsyncTaskLoader<Result>

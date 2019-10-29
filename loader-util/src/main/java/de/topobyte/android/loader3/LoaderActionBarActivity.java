@@ -18,8 +18,8 @@
 package de.topobyte.android.loader3;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import de.topobyte.android.loader2.LoaderDialog;
