@@ -1,6 +1,11 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
+if (project.hasProperty("topobyte")) {
+    apply from: 'file:///' + System.getProperty("user.home") \
+        + '/.gradle/topobyte.gradle'
+}
+
 group = pGroup
 version = pVersion
 
@@ -21,14 +26,6 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: maven_url_topobyte)
-        }
-    }
 }
 
 task sourcesJar(type: Jar) {
