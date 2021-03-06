@@ -14,9 +14,6 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            url maven_path_topobyte
-        }
         jcenter()
         google()
     }
