@@ -9,11 +9,11 @@ if (project.hasProperty("topobyte")) {
 }
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 27
+        targetSdkVersion 31
     }
     buildTypes {
         release {
