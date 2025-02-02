@@ -11,7 +11,7 @@ if (project.hasProperty("topobyte")) {
 android {
     compileSdkVersion 33
     buildToolsVersion '30.0.3'
-    namespace 'de.topobyte.loaderutil'
+    namespace = 'de.topobyte.loaderutil'
 
     defaultConfig {
         minSdkVersion 9
